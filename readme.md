@@ -98,3 +98,16 @@ If you feel Firefly III made your life better, consider contributing as a sponso
 
 <!-- END OF SPONSOR -->
 
+<!-- hoe to access the app -->
+step 1:
+fork the repo into your github.
+step2:
+clone the repo to local storage.
+step3:
+kubectl apply -f firefly-kubernetes.yml
+step 4:
+edit hosts file.
+  i) add you domain and ip address.
+chanage hostname in ingress.
+step5:
+Done!!!
