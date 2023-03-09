@@ -99,6 +99,7 @@ If you feel Firefly III made your life better, consider contributing as a sponso
 <!-- END OF SPONSOR -->
 
 <!-- hoe to access the app -->
+## Access 
 step 1:
 fork the repo into your github.
 step2:
