@@ -1,0 +1,729 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: front
+  name: front
+spec:
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: front
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: db
+  name: db
+spec:
+  ports:
+    - name: "3306"
+      port: 3306
+      targetPort: 3306
+  selector:
+    app: db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: front
+  name: front
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: front
+    spec:
+      containers:
+        - env:
+            - name: ALLOW_WEBHOOKS
+              valueFrom:
+                configMapKeyRef:
+                  key: ALLOW_WEBHOOKS
+                  name: env
+            - name: APP_DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  key: APP_DEBUG
+                  name: env
+            - name: APP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  key: APP_ENV
+                  name: env
+            - name: APP_KEY
+              valueFrom:
+                configMapKeyRef:
+                  key: APP_KEY
+                  name: env
+            - name: APP_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  key: APP_LOG_LEVEL
+                  name: env
+            - name: APP_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: APP_NAME
+                  name: env
+            - name: APP_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: APP_URL
+                  name: env
+            - name: AUDIT_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  key: AUDIT_LOG_LEVEL
+                  name: env
+            - name: AUTHENTICATION_GUARD
+              valueFrom:
+                configMapKeyRef:
+                  key: AUTHENTICATION_GUARD
+                  name: env
+            - name: AUTHENTICATION_GUARD_EMAIL
+              valueFrom:
+                configMapKeyRef:
+                  key: AUTHENTICATION_GUARD_EMAIL
+                  name: env
+            - name: AUTHENTICATION_GUARD_HEADER
+              valueFrom:
+                configMapKeyRef:
+                  key: AUTHENTICATION_GUARD_HEADER
+                  name: env
+            - name: BROADCAST_DRIVER
+              valueFrom:
+                configMapKeyRef:
+                  key: BROADCAST_DRIVER
+                  name: env
+            - name: CACHE_DRIVER
+              valueFrom:
+                configMapKeyRef:
+                  key: CACHE_DRIVER
+                  name: env
+            - name: CACHE_PREFIX
+              valueFrom:
+                configMapKeyRef:
+                  key: CACHE_PREFIX
+                  name: env
+            - name: COOKIE_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  key: COOKIE_DOMAIN
+                  name: env
+            - name: COOKIE_PATH
+              valueFrom:
+                configMapKeyRef:
+                  key: COOKIE_PATH
+                  name: env
+            - name: COOKIE_SAMESITE
+              valueFrom:
+                configMapKeyRef:
+                  key: COOKIE_SAMESITE
+                  name: env
+            - name: COOKIE_SECURE
+              valueFrom:
+                configMapKeyRef:
+                  key: COOKIE_SECURE
+                  name: env
+            - name: CUSTOM_LOGOUT_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: CUSTOM_LOGOUT_URL
+                  name: env
+            - name: DB_CONNECTION
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_CONNECTION
+                  name: env
+            - name: DB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_DATABASE
+                  name: env
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_HOST
+                  name: env
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_PASSWORD
+                  name: env
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_PORT
+                  name: env
+            - name: DB_SOCKET
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_SOCKET
+                  name: env
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_USERNAME
+                  name: env
+            - name: DEFAULT_LANGUAGE
+              valueFrom:
+                configMapKeyRef:
+                  key: DEFAULT_LANGUAGE
+                  name: env
+            - name: DEFAULT_LOCALE
+              valueFrom:
+                configMapKeyRef:
+                  key: DEFAULT_LOCALE
+                  name: env
+            - name: DEMO_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: DEMO_PASSWORD
+                  name: env
+            - name: DEMO_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: DEMO_USERNAME
+                  name: env
+            - name: DISABLE_CSP_HEADER
+              valueFrom:
+                configMapKeyRef:
+                  key: DISABLE_CSP_HEADER
+                  name: env
+            - name: DISABLE_FRAME_HEADER
+              valueFrom:
+                configMapKeyRef:
+                  key: DISABLE_FRAME_HEADER
+                  name: env
+            - name: DKR_BUILD_LOCALE
+              valueFrom:
+                configMapKeyRef:
+                  key: DKR_BUILD_LOCALE
+                  name: env
+            - name: DKR_CHECK_SQLITE
+              valueFrom:
+                configMapKeyRef:
+                  key: DKR_CHECK_SQLITE
+                  name: env
+            - name: DKR_RUN_MIGRATION
+              valueFrom:
+                configMapKeyRef:
+                  key: DKR_RUN_MIGRATION
+                  name: env
+            - name: DKR_RUN_PASSPORT_INSTALL
+              valueFrom:
+                configMapKeyRef:
+                  key: DKR_RUN_PASSPORT_INSTALL
+                  name: env
+            - name: DKR_RUN_REPORT
+              valueFrom:
+                configMapKeyRef:
+                  key: DKR_RUN_REPORT
+                  name: env
+            - name: DKR_RUN_UPGRADE
+              valueFrom:
+                configMapKeyRef:
+                  key: DKR_RUN_UPGRADE
+                  name: env
+            - name: DKR_RUN_VERIFY
+              valueFrom:
+                configMapKeyRef:
+                  key: DKR_RUN_VERIFY
+                  name: env
+            - name: ENABLE_EXTERNAL_MAP
+              valueFrom:
+                configMapKeyRef:
+                  key: ENABLE_EXTERNAL_MAP
+                  name: env
+            - name: ENABLE_EXTERNAL_RATES
+              valueFrom:
+                configMapKeyRef:
+                  key: ENABLE_EXTERNAL_RATES
+                  name: env
+            - name: FIREFLY_III_LAYOUT
+              valueFrom:
+                configMapKeyRef:
+                  key: FIREFLY_III_LAYOUT
+                  name: env
+            - name: IPINFO_TOKEN
+              valueFrom:
+                configMapKeyRef:
+                  key: IPINFO_TOKEN
+                  name: env
+            - name: IS_HEROKU
+              valueFrom:
+                configMapKeyRef:
+                  key: IS_HEROKU
+                  name: env
+            - name: LOG_CHANNEL
+              valueFrom:
+                configMapKeyRef:
+                  key: LOG_CHANNEL
+                  name: env
+            - name: MAILGUN_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  key: MAILGUN_DOMAIN
+                  name: env
+            - name: MAILGUN_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  key: MAILGUN_ENDPOINT
+                  name: env
+            - name: MAILGUN_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  key: MAILGUN_SECRET
+                  name: env
+            - name: MAIL_ENCRYPTION
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_ENCRYPTION
+                  name: env
+            - name: MAIL_FROM
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_FROM
+                  name: env
+            - name: MAIL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_HOST
+                  name: env
+            - name: MAIL_MAILER
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_MAILER
+                  name: env
+            - name: MAIL_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_PASSWORD
+                  name: env
+            - name: MAIL_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_PORT
+                  name: env
+            - name: MAIL_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_USERNAME
+                  name: env
+            - name: MANDRILL_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  key: MANDRILL_SECRET
+                  name: env
+            - name: MAP_DEFAULT_LAT
+              valueFrom:
+                configMapKeyRef:
+                  key: MAP_DEFAULT_LAT
+                  name: env
+            - name: MAP_DEFAULT_LONG
+              valueFrom:
+                configMapKeyRef:
+                  key: MAP_DEFAULT_LONG
+                  name: env
+            - name: MAP_DEFAULT_ZOOM
+              valueFrom:
+                configMapKeyRef:
+                  key: MAP_DEFAULT_ZOOM
+                  name: env
+            - name: MYSQL_SSL_CA
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_SSL_CA
+                  name: env
+            - name: MYSQL_SSL_CAPATH
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_SSL_CAPATH
+                  name: env
+            - name: MYSQL_SSL_CERT
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_SSL_CERT
+                  name: env
+            - name: MYSQL_SSL_CIPHER
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_SSL_CIPHER
+                  name: env
+            - name: MYSQL_SSL_KEY
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_SSL_KEY
+                  name: env
+            - name: MYSQL_SSL_VERIFY_SERVER_CERT
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_SSL_VERIFY_SERVER_CERT
+                  name: env
+            - name: MYSQL_USE_SSL
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_USE_SSL
+                  name: env
+            - name: PAPERTRAIL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: PAPERTRAIL_HOST
+                  name: env
+            - name: PAPERTRAIL_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: PAPERTRAIL_PORT
+                  name: env
+            - name: PASSPORT_PRIVATE_KEY
+              valueFrom:
+                configMapKeyRef:
+                  key: PASSPORT_PRIVATE_KEY
+                  name: env
+            - name: PASSPORT_PUBLIC_KEY
+              valueFrom:
+                configMapKeyRef:
+                  key: PASSPORT_PUBLIC_KEY
+                  name: env
+            - name: PGSQL_SCHEMA
+              valueFrom:
+                configMapKeyRef:
+                  key: PGSQL_SCHEMA
+                  name: env
+            - name: PGSQL_SSL_CERT
+              valueFrom:
+                configMapKeyRef:
+                  key: PGSQL_SSL_CERT
+                  name: env
+            - name: PGSQL_SSL_CRL_FILE
+              valueFrom:
+                configMapKeyRef:
+                  key: PGSQL_SSL_CRL_FILE
+                  name: env
+            - name: PGSQL_SSL_KEY
+              valueFrom:
+                configMapKeyRef:
+                  key: PGSQL_SSL_KEY
+                  name: env
+            - name: PGSQL_SSL_MODE
+              valueFrom:
+                configMapKeyRef:
+                  key: PGSQL_SSL_MODE
+                  name: env
+            - name: PGSQL_SSL_ROOT_CERT
+              valueFrom:
+                configMapKeyRef:
+                  key: PGSQL_SSL_ROOT_CERT
+                  name: env
+            - name: PUSHER_ID
+              valueFrom:
+                configMapKeyRef:
+                  key: PUSHER_ID
+                  name: env
+            - name: PUSHER_KEY
+              valueFrom:
+                configMapKeyRef:
+                  key: PUSHER_KEY
+                  name: env
+            - name: PUSHER_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  key: PUSHER_SECRET
+                  name: env
+            - name: QUEUE_DRIVER
+              valueFrom:
+                configMapKeyRef:
+                  key: QUEUE_DRIVER
+                  name: env
+            - name: REDIS_CACHE_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_CACHE_DB
+                  name: env
+            - name: REDIS_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_DB
+                  name: env
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_HOST
+                  name: env
+            - name: REDIS_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_PASSWORD
+                  name: env
+            - name: REDIS_PATH
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_PATH
+                  name: env
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_PORT
+                  name: env
+            - name: REDIS_SCHEME
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_SCHEME
+                  name: env
+            - name: REDIS_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_USERNAME
+                  name: env
+            - name: SEND_ERROR_MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  key: SEND_ERROR_MESSAGE
+                  name: env
+            - name: SEND_REPORT_JOURNALS
+              valueFrom:
+                configMapKeyRef:
+                  key: SEND_REPORT_JOURNALS
+                  name: env
+            - name: SESSION_DRIVER
+              valueFrom:
+                configMapKeyRef:
+                  key: SESSION_DRIVER
+                  name: env
+            - name: SITE_OWNER
+              valueFrom:
+                configMapKeyRef:
+                  key: SITE_OWNER
+                  name: env
+            - name: SPARKPOST_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  key: SPARKPOST_SECRET
+                  name: env
+            - name: STATIC_CRON_TOKEN
+              valueFrom:
+                configMapKeyRef:
+                  key: STATIC_CRON_TOKEN
+                  name: env
+            - name: TRACKER_SITE_ID
+              valueFrom:
+                configMapKeyRef:
+                  key: TRACKER_SITE_ID
+                  name: env
+            - name: TRACKER_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: TRACKER_URL
+                  name: env
+            - name: TRUSTED_PROXIES
+              valueFrom:
+                configMapKeyRef:
+                  key: TRUSTED_PROXIES
+                  name: env
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  key: TZ
+                  name: env
+          image: fireflyiii/core:latest
+          name: app
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /var/www/html/storage/upload
+              name: firefly-iii-upload
+      restartPolicy: Always
+      volumes:
+        - name: firefly-iii-upload
+          persistentVolumeClaim:
+            claimName: firefly-iii-upload
+
+---
+apiVersion: v1
+data:
+  ALLOW_WEBHOOKS: "false"
+  APP_DEBUG: "false"
+  APP_ENV: local
+  APP_KEY: SomeRandomStringOf32CharsExactly
+  APP_LOG_LEVEL: notice
+  APP_NAME: FireflyIII
+  APP_URL: http://localhost
+  AUDIT_LOG_LEVEL: info
+  AUTHENTICATION_GUARD: web
+  AUTHENTICATION_GUARD_EMAIL: ""
+  AUTHENTICATION_GUARD_HEADER: REMOTE_USER
+  BROADCAST_DRIVER: log
+  CACHE_DRIVER: file
+  CACHE_PREFIX: firefly
+  COOKIE_DOMAIN: ""
+  COOKIE_PATH: /
+  COOKIE_SAMESITE: lax
+  COOKIE_SECURE: "false"
+  CUSTOM_LOGOUT_URL: ""
+  DB_CONNECTION: mysql
+  DB_DATABASE: firefly
+  DB_HOST: db
+  DB_PASSWORD: secret_firefly_password
+  DB_PORT: "3306"
+  DB_SOCKET: ""
+  DB_USERNAME: firefly
+  DEFAULT_LANGUAGE: en_US
+  DEFAULT_LOCALE: equal
+  DEMO_PASSWORD: ""
+  DEMO_USERNAME: ""
+  DISABLE_CSP_HEADER: "false"
+  DISABLE_FRAME_HEADER: "false"
+  DKR_BUILD_LOCALE: "false"
+  DKR_CHECK_SQLITE: "true"
+  DKR_RUN_MIGRATION: "true"
+  DKR_RUN_PASSPORT_INSTALL: "true"
+  DKR_RUN_REPORT: "true"
+  DKR_RUN_UPGRADE: "true"
+  DKR_RUN_VERIFY: "true"
+  ENABLE_EXTERNAL_MAP: "false"
+  ENABLE_EXTERNAL_RATES: "false"
+  FIREFLY_III_LAYOUT: v1
+  IPINFO_TOKEN: ""
+  IS_HEROKU: "false"
+  LOG_CHANNEL: stack
+  MAIL_ENCRYPTION: "null"
+  MAIL_FROM: changeme@example.com
+  MAIL_HOST: "null"
+  MAIL_MAILER: log
+  MAIL_PASSWORD: "null"
+  MAIL_PORT: "2525"
+  MAIL_USERNAME: "null"
+  MAILGUN_DOMAIN: ""
+  MAILGUN_ENDPOINT: api.mailgun.net
+  MAILGUN_SECRET: ""
+  MANDRILL_SECRET: ""
+  MAP_DEFAULT_LAT: "51.983333"
+  MAP_DEFAULT_LONG: "5.916667"
+  MAP_DEFAULT_ZOOM: "6"
+  MYSQL_SSL_CA: ""
+  MYSQL_SSL_CAPATH: /etc/ssl/certs/
+  MYSQL_SSL_CERT: ""
+  MYSQL_SSL_CIPHER: ""
+  MYSQL_SSL_KEY: ""
+  MYSQL_SSL_VERIFY_SERVER_CERT: "true"
+  MYSQL_USE_SSL: "false"
+  PAPERTRAIL_HOST: ""
+  PAPERTRAIL_PORT: ""
+  PASSPORT_PRIVATE_KEY: ""
+  PASSPORT_PUBLIC_KEY: ""
+  PGSQL_SCHEMA: public
+  PGSQL_SSL_CERT: "null"
+  PGSQL_SSL_CRL_FILE: "null"
+  PGSQL_SSL_KEY: "null"
+  PGSQL_SSL_MODE: prefer
+  PGSQL_SSL_ROOT_CERT: "null"
+  PUSHER_ID: ""
+  PUSHER_KEY: ""
+  PUSHER_SECRET: ""
+  QUEUE_DRIVER: sync
+  REDIS_CACHE_DB: "1"
+  REDIS_DB: "0"
+  REDIS_HOST: 127.0.0.1
+  REDIS_PASSWORD: ""
+  REDIS_PATH: ""
+  REDIS_PORT: "6379"
+  REDIS_SCHEME: tcp
+  REDIS_USERNAME: ""
+  SEND_ERROR_MESSAGE: "true"
+  SEND_REPORT_JOURNALS: "true"
+  SESSION_DRIVER: file
+  SITE_OWNER: mail@example.com
+  SPARKPOST_SECRET: ""
+  STATIC_CRON_TOKEN: ""
+  TRACKER_SITE_ID: ""
+  TRACKER_URL: ""
+  TRUSTED_PROXIES: ""
+  TZ: Europe/Amsterdam
+kind: ConfigMap
+metadata:
+  labels:
+    app: app-env
+  name: env
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: firefly-iii-upload
+  name: firefly-iii-upload
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: db
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  strategy:
+    type: Recreate
+  template:
+    metadata: 
+      labels:
+        app: db
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_DATABASE
+              value: firefly
+            - name: MYSQL_PASSWORD
+              value: secret_firefly_password
+            - name: MYSQL_RANDOM_ROOT_PASSWORD
+              value: "yes"
+            - name: MYSQL_USER
+              value: firefly
+          image: mariadb
+          name: db
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: firefly-iii-db
+      # hostname: fireflyiiidb
+      restartPolicy: Always
+      volumes:
+        - name: firefly-iii-db
+          persistentVolumeClaim:
+            claimName: firefly-iii-db
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: firefly-iii-db
+  name: firefly-iii-db
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
