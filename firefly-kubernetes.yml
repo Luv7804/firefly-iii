@@ -156,7 +156,7 @@ spec:
 
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   labels:
     app: db
@@ -166,8 +166,6 @@ spec:
   selector:
     matchLabels:
       app: db
-  strategy:
-    type: Recreate
   template:
     metadata: 
       labels:
